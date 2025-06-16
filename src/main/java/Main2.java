@@ -23,6 +23,9 @@ public class Main2 {
             result.next();
             String productName = result.getString(2); //in the parentheses I can also put the actual name of the column
             System.out.println("\nThe product with ProductID " + userInput + " is " + "\"" + productName + "\"");
+
+            connection.close();
+            preparedStatement.close();
         } catch (Exception e) {
             System.out.println("An error has occurred!");
             System.out.println(e);
