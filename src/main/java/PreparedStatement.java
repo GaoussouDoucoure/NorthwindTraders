@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.Scanner;
 
-public class Main2 {
+public class PreparedStatement {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String url = "jdbc:mysql://localhost:3306/northwind";
@@ -15,7 +15,7 @@ public class Main2 {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            java.sql.PreparedStatement preparedStatement = connection.prepareStatement(query);
             System.out.print("Enter ProductID to fetch product name (e.g. 12): ");
             int userInput = sc.nextInt();
             preparedStatement.setInt(1, userInput);
