@@ -1,16 +1,18 @@
 public class Queries {
 
-    public static void displayAllProducts(){
+    public static String displayAllProducts(){
         String query = "SELECT * FROM northwind.products;";
+        return query;
     }
 
-    public static void displayAllCustomers(){
+    public static String displayAllCustomers(){
         String query = """
                 SELECT ContactName, CompanyName, City, Country, Phone
                 FROM northwind.customers
                 WHERE COUNTRY is not Null
                 ORDER BY Country ;
                 """;
+        return query;
     }
 
 }
