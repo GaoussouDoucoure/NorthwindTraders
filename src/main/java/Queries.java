@@ -5,7 +5,12 @@ public class Queries {
     }
 
     public static void displayAllCustomers(){
-        String query = "SELECT ContactName, CompanyName, City, Country, Phone FROM northwind.customers;";
+        String query = """
+                SELECT ContactName, CompanyName, City, Country, Phone
+                FROM northwind.customers
+                WHERE COUNTRY is not Null
+                ORDER BY Country ;
+                """;
     }
 
 }
