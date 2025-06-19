@@ -6,7 +6,8 @@ public class NormalStatement {
         try {
             Scanner sc = new Scanner(System.in);
             String url = "jdbc:mysql://localhost:3306/northwind"; //URL for connection
-            String username = "root";   //DATABASE username
+            System.out.print("Enter Database username: ");
+            String username = sc.nextLine();   //DATABASE username will be asked to input
             System.out.println("Enter database password: ");
             String password = sc.nextLine();  //DATABASE password will be asked to input
 
@@ -27,8 +28,9 @@ public class NormalStatement {
             }
 
             //closing the RESOURCES
-            connection.close();
+            result.close();
             statement.close();
+            connection.close();
 
         } catch (Exception e) {
             System.out.println(e);
