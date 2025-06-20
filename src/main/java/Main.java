@@ -11,7 +11,7 @@ public class Main {
         ResultSet resultSet = null;
         String query = "";
 
-        HomeScreen.homeScreen();
+        Functions.homeScreen();
         System.out.print("Select an option: ");
         int choice = sc.nextInt();
         switch (choice){
@@ -48,7 +48,7 @@ public class Main {
                 }
                 finally {
                     // close the resources
-                    closeResources(resultSet, preparedStatement, connection);
+                    Functions.closeResources(resultSet, preparedStatement, connection);
                 }
 
                 break;
@@ -91,37 +91,15 @@ public class Main {
                 }
                 finally {
                     // close the resources
-                    closeResources(resultSet, preparedStatement, connection);
+                    Functions.closeResources(resultSet, preparedStatement, connection);
                 }
 
                 break;
+
             default:
                 System.out.println("You have entered the wrong choice: " + choice);
-                HomeScreen.homeScreen();
         }
 
     }
-
-    // created a method for the final block to clean up the code a bit
-    public static void closeResources(ResultSet resultSet, PreparedStatement preparedStatement, Connection connection) {
-        try {
-            if (resultSet != null) resultSet.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            if (preparedStatement != null) preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            if (connection != null) connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
 
 }
