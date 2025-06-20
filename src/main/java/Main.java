@@ -34,12 +34,18 @@ public class Main {
                     preparedStatement = connection.prepareStatement(query);
                     resultSet = preparedStatement.executeQuery();
 
-                    System.out.println("\nProducts Names:");
-                    int count = 1;
-                    while (resultSet.next()){
-                        String productName = resultSet.getString(2);
-                        System.out.println(count +".) " + productName);
-                        count++;
+                    // Print header with pipes
+                    System.out.printf("\n| %-8s | %-35s | %-8s | %-5s |%n", "Id", "Name", "Price", "Stock");
+                    System.out.println("|----------|-------------------------------------|----------|-------|");
+
+                    // Print each product
+                    while (resultSet.next()) {
+                        int id = resultSet.getInt("ProductID");
+                        String name = resultSet.getString("ProductName");
+                        double price = resultSet.getDouble("UnitPrice");
+                        int stock = resultSet.getInt("UnitsInStock");
+
+                        System.out.printf("| %-8d | %-35s | $%-7.2f | %5d |%n", id, name, price, stock);
                     }
 
                 }
