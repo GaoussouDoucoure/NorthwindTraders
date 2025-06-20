@@ -1,7 +1,10 @@
 public class Queries {
 
     public static String displayAllProducts(){
-        String query = "SELECT * FROM northwind.products;";
+        String query = """
+                SELECT ProductID, ProductName, UnitPrice, UnitsInStock
+                FROM northwind.products;
+                """;
         return query;
     }
 
