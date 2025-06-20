@@ -15,4 +15,13 @@ public class Queries {
         return query;
     }
 
+    public static String displayAllCategories(){
+        String query = """
+                SELECT CategoryID, CategoryName
+                FROM northwind.categories
+                ORDER BY CategoryID;
+                """;
+        return query;
+    }
+
 }
