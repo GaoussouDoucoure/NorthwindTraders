@@ -102,6 +102,36 @@ public class Main {
 
                 break;
 
+            case 3:
+                query = Queries.displayAllCategories();
+                url = "jdbc:mysql://localhost:3306/northwind";
+                sc.nextLine();
+                System.out.print("Enter database username: ");
+                username = sc.nextLine();
+                System.out.print("Enter database password: ");
+                password = sc.nextLine();
+                try (Connection connection1 = DriverManager.getConnection(url, username, password);
+                     PreparedStatement preparedStatement1 = connection1.prepareStatement(query)) {
+                    try (
+                            ResultSet resultSet1 = preparedStatement1.executeQuery()
+                    ) {
+                        //header
+                        System.out.printf("\n| %-20s | %-20s |\n", "Category ID", "Category Name");
+                        System.out.print("-----------------------|-----------------------");
+                        while (resultSet1.next()) {
+                            int categoryID = resultSet1.getInt("CategoryID");
+                            String categoryName = resultSet1.getString("CategoryName");
+                            System.out.printf("\n| %-20s | %-20s |", categoryID, categoryName);
+                        }
+                    }
+
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
+
+                break;
+
             default:
                 System.out.println("You have entered the wrong choice: " + choice);
         }
