@@ -11,6 +11,7 @@ public class Functions {
                 What do you want to do?
                   1) Display all products?
                   2) Display all customers?
+                  3) Display all categories?
                   0) Exit
                 
                 """);
