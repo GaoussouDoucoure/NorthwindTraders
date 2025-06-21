@@ -6,14 +6,14 @@ public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
         Scanner sc = new Scanner(System.in);
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        String url = "jdbc:mysql://localhost:3306/northwind";
         String query = "";
 
         Functions.homeScreen();
         System.out.print("Select an option: ");
         int choice = sc.nextInt();
+
+
         switch (choice){
             case 0:
                 System.out.println("\nYou chose to exit the application. Application terminated..");
@@ -21,47 +21,39 @@ public class Main {
 
             case 1:
                 query = Queries.displayAllProducts();
-
-                String url = "jdbc:mysql://localhost:3306/northwind";
                 sc.nextLine();
                 System.out.print("Enter database username: ");
                 String username = sc.nextLine();
                 System.out.print("Enter database password: ");
                 String password = sc.nextLine();
 
-                try {
-                    connection = DriverManager.getConnection(url, username, password);
-                    preparedStatement = connection.prepareStatement(query);
-                    resultSet = preparedStatement.executeQuery();
+                try (Connection connection = DriverManager.getConnection(url, username, password);
+                    PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    try (ResultSet resultSet = preparedStatement.executeQuery()){
+                        // Print header with pipes
+                        System.out.printf("\n| %-8s | %-35s | %-8s | %-5s |%n", "Id", "Name", "Price", "Stock");
+                        System.out.println("|----------|-------------------------------------|----------|-------|");
 
-                    // Print header with pipes
-                    System.out.printf("\n| %-8s | %-35s | %-8s | %-5s |%n", "Id", "Name", "Price", "Stock");
-                    System.out.println("|----------|-------------------------------------|----------|-------|");
+                        // Print each product
+                        while (resultSet.next()) {
+                            int id = resultSet.getInt("ProductID");
+                            String name = resultSet.getString("ProductName");
+                            double price = resultSet.getDouble("UnitPrice");
+                            int stock = resultSet.getInt("UnitsInStock");
 
-                    // Print each product
-                    while (resultSet.next()) {
-                        int id = resultSet.getInt("ProductID");
-                        String name = resultSet.getString("ProductName");
-                        double price = resultSet.getDouble("UnitPrice");
-                        int stock = resultSet.getInt("UnitsInStock");
-
-                        System.out.printf("| %-8d | %-35s | $%-7.2f | %5d |%n", id, name, price, stock);
+                            System.out.printf("| %-8d | %-35s | $%-7.2f | %5d |%n", id, name, price, stock);
+                        }
                     }
 
                 }
                 catch (SQLException e) {
                     e.printStackTrace();
                 }
-                finally {
-                    // close the resources
-                    Functions.closeResources(resultSet, preparedStatement, connection);
-                }
 
                 break;
 
             case 2:
                 query= Queries.displayAllCustomers();
-
                 url = "jdbc:mysql://localhost:3306/northwind";
                 sc.nextLine();
                 System.out.print("Enter database username: ");
@@ -69,35 +61,30 @@ public class Main {
                 System.out.print("Enter database password: ");
                 password = sc.nextLine();
 
-                try {
-                    connection = DriverManager.getConnection(url, username, password);
-                    preparedStatement = connection.prepareStatement(query);
-                    resultSet = preparedStatement.executeQuery();
-
-                    while (resultSet.next()){
-                        String contactName = resultSet.getString("ContactName");
-                        String companyName = resultSet.getString("CompanyName");
-                        String city = resultSet.getString("City");
-                        String country = resultSet.getString("Country");
-                        String phone = resultSet.getString("Phone");
-                        System.out.printf("""
-                                
-                                Contact Name: %s
-                                Company Name: %s
-                                City: %s
-                                Country: %s
-                                Phone: %s
-                                ----------------------------------------
-                                """, contactName, companyName, city, country, phone);
+                try (Connection connection = DriverManager.getConnection(url, username, password);
+                     PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    try(ResultSet resultSet = preparedStatement.executeQuery()){
+                        while (resultSet.next()) {
+                            String contactName = resultSet.getString("ContactName");
+                            String companyName = resultSet.getString("CompanyName");
+                            String city = resultSet.getString("City");
+                            String country = resultSet.getString("Country");
+                            String phone = resultSet.getString("Phone");
+                            System.out.printf("""
+                                    
+                                    Contact Name: %s
+                                    Company Name: %s
+                                    City: %s
+                                    Country: %s
+                                    Phone: %s
+                                    ----------------------------------------
+                                    """, contactName, companyName, city, country, phone);
+                        }
                     }
 
                 }
                 catch (SQLException e) {
                     e.printStackTrace();
-                }
-                finally {
-                    // close the resources
-                    Functions.closeResources(resultSet, preparedStatement, connection);
                 }
 
                 break;
@@ -110,19 +97,19 @@ public class Main {
                 username = sc.nextLine();
                 System.out.print("Enter database password: ");
                 password = sc.nextLine();
-                try (Connection connection1 = DriverManager.getConnection(url, username, password);
-                     PreparedStatement preparedStatement1 = connection1.prepareStatement(query)) {
-                    try (
-                            ResultSet resultSet1 = preparedStatement1.executeQuery()
-                    ) {
+
+                try (Connection connection = DriverManager.getConnection(url, username, password);
+                     PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    try (ResultSet resultSet = preparedStatement.executeQuery()) {
                         //header
                         System.out.printf("\n| %-20s | %-20s |\n", "Category ID", "Category Name");
                         System.out.print("-----------------------|-----------------------");
-                        while (resultSet1.next()) {
-                            int categoryID = resultSet1.getInt("CategoryID");
-                            String categoryName = resultSet1.getString("CategoryName");
+                        while (resultSet.next()) {
+                            int categoryID = resultSet.getInt("CategoryID");
+                            String categoryName = resultSet.getString("CategoryName");
                             System.out.printf("\n| %-20s | %-20s |", categoryID, categoryName);
                         }
+                        System.out.println();
                     }
 
                 }
