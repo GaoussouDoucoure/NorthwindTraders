@@ -2,6 +2,8 @@ import java.sql.*;
 import java.sql.PreparedStatement;
 import java.util.Scanner;
 
+// USING DRIVER MANAGER
+
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
         Scanner sc = new Scanner(System.in);
